@@ -329,16 +329,11 @@
         .legend-line.y2025 { background: var(--year-2025); }
         .legend-line.y2024 { background: var(--year-2024); }
 
-        /* KPI Content Layout */
+        /* KPI Content Layout - Vertical Stack */
         .kpi-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-            align-items: start;
-        }
-
-        @media (max-width: 1100px) {
-            .kpi-content { grid-template-columns: 1fr; }
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         /* Chart Container */
@@ -350,50 +345,47 @@
 
         .chart-svg {
             width: 100%;
-            height: 320px;
+            height: 280px;
         }
 
-        /* Monthly Table */
+        /* Monthly Table - Horizontal/Transposed */
         .monthly-table-container {
-            max-height: 400px;
-            overflow-y: auto;
             border-radius: 10px;
             border: 1px solid var(--light-steel);
+            overflow-x: auto;
         }
 
         .monthly-table {
             width: 100%;
             border-collapse: collapse;
             font-size: var(--font-body-sm);
-        }
-
-        .monthly-table thead {
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            min-width: 800px;
         }
 
         .monthly-table th {
             background: var(--navy);
             color: white;
-            padding: 12px 10px;
+            padding: 10px 8px;
             text-align: center;
             font-size: var(--font-label);
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
         }
 
         .monthly-table th:first-child {
             text-align: left;
             padding-left: 14px;
+            min-width: 90px;
         }
 
         .monthly-table td {
-            padding: 10px;
+            padding: 8px 6px;
             text-align: center;
             border-bottom: 1px solid var(--light-steel);
             vertical-align: middle;
+            white-space: nowrap;
         }
 
         .monthly-table td:first-child {
@@ -402,10 +394,17 @@
             font-weight: 600;
             color: var(--navy);
             background: rgba(248, 250, 252, 0.8);
+            position: sticky;
+            left: 0;
+            z-index: 5;
         }
 
         .monthly-table tbody tr:hover td {
             background: rgba(143, 175, 212, 0.1);
+        }
+
+        .monthly-table tbody tr:hover td:first-child {
+            background: rgba(230, 240, 250, 0.95);
         }
 
         .monthly-table tbody tr:last-child td {
@@ -417,9 +416,9 @@
             color: var(--navy);
         }
 
-        .monthly-table .value-2025,
-        .monthly-table .value-2024 {
+        .monthly-table .value-muted {
             color: var(--text-muted);
+            font-size: var(--font-caption);
         }
 
         .variance-badge {
@@ -1117,8 +1116,8 @@
         }
 
         function renderChart(market, kpi) {
-            const width = 700;
-            const height = 320;
+            const width = 900;
+            const height = 280;
             const marginLeft = 70;
             const marginRight = 30;
             const marginTop = 20;
@@ -1231,46 +1230,59 @@
         function renderMonthlyTable(market, kpi) {
             const isPctComparison = isPercentageComparison(kpi);
 
-            const rows = MONTH_KEYS.map(month => {
+            // Gather data for all months
+            const monthData = MONTH_KEYS.map(month => {
                 const val2026 = getDisplayValue(market, kpi, '2026', month);
                 const val2025 = getDisplayValue(market, kpi, '2025', month);
                 const val2024 = getDisplayValue(market, kpi, '2024', month);
-
                 const var2025 = calculateVariance(val2026, val2025, isPctComparison);
                 const var2024 = calculateVariance(val2026, val2024, isPctComparison);
+                return { month, val2026, val2025, val2024, var2025, var2024 };
+            });
 
-                return `
-                    <tr>
-                        <td>${month}</td>
-                        <td class="value-2026">${formatValue(val2026, kpi)}</td>
-                        <td>
-                            ${var2025 !== null
-                                ? `<span class="variance-badge ${getVarianceClass(var2025)}">${formatVariance(var2025, isPctComparison)}</span>`
-                                : '<span class="cell-na">—</span>'
-                            }
-                        </td>
-                        <td>
-                            ${var2024 !== null
-                                ? `<span class="variance-badge ${getVarianceClass(var2024)}">${formatVariance(var2024, isPctComparison)}</span>`
-                                : '<span class="cell-na">—</span>'
-                            }
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+            // Build header row with months
+            const headerCells = MONTH_KEYS.map(m => `<th>${m}</th>`).join('');
+
+            // Row 1: 2026 Target values
+            const row2026 = monthData.map(d =>
+                `<td class="value-2026">${formatValue(d.val2026, kpi)}</td>`
+            ).join('');
+
+            // Row 2: vs 2025 variance
+            const rowVs2025 = monthData.map(d =>
+                d.var2025 !== null
+                    ? `<td><span class="variance-badge ${getVarianceClass(d.var2025)}">${formatVariance(d.var2025, isPctComparison)}</span></td>`
+                    : '<td><span class="cell-na">—</span></td>'
+            ).join('');
+
+            // Row 3: vs 2024 variance
+            const rowVs2024 = monthData.map(d =>
+                d.var2024 !== null
+                    ? `<td><span class="variance-badge ${getVarianceClass(d.var2024)}">${formatVariance(d.var2024, isPctComparison)}</span></td>`
+                    : '<td><span class="cell-na">—</span></td>'
+            ).join('');
 
             return `
                 <table class="monthly-table">
                     <thead>
                         <tr>
-                            <th>Month</th>
-                            <th>2026</th>
-                            <th>vs 2025</th>
-                            <th>vs 2024</th>
+                            <th></th>
+                            ${headerCells}
                         </tr>
                     </thead>
                     <tbody>
-                        ${rows}
+                        <tr>
+                            <td>2026 Target</td>
+                            ${row2026}
+                        </tr>
+                        <tr>
+                            <td>vs 2025</td>
+                            ${rowVs2025}
+                        </tr>
+                        <tr>
+                            <td>vs 2024</td>
+                            ${rowVs2024}
+                        </tr>
                     </tbody>
                 </table>
             `;
