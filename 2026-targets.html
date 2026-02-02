@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUSE 2026 KPI Targets | Forecast Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --navy: #1B365D;
+            --steel-blue: #8FAFD4;
+            --light-steel: #B8D4E8;
+            --positive: #2E7D5A;
+            --negative: #C4314B;
+            --neutral: #B8860B;
+            --white: #FFFFFF;
+            --light-bg: #F8FAFC;
+            --text-dark: #1B365D;
+            --text-muted: #64748B;
+            --year-2026: #1B365D;
+            --year-2025: #8FAFD4;
+            --year-2024: #CBD5E1;
+
+            --font-h1: 26px;
+            --font-h2: 20px;
+            --font-h3: 18px;
+            --font-value-xl: 32px;
+            --font-value-lg: 24px;
+            --font-value-md: 18px;
+            --font-value-sm: 14px;
+            --font-body: 14px;
+            --font-body-sm: 13px;
+            --font-caption: 12px;
+            --font-label: 11px;
+            --font-micro: 10px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            padding: 20px 48px;
+            border-bottom: 3px solid var(--navy);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-text h1 {
+            font-size: var(--font-h1);
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .header-text p {
+            color: var(--text-muted);
+            font-size: var(--font-body);
+        }
+
+        .header-badge {
+            background: var(--navy);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: var(--font-body-sm);
+            font-weight: 600;
+        }
+
+        /* Controls Bar */
+        .controls-bar {
+            background: var(--white);
+            padding: 16px 48px;
+            border-bottom: 1px solid var(--light-steel);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .control-group label {
+            font-size: var(--font-label);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .control-select {
+            background: var(--white);
+            border: 2px solid var(--navy);
+            color: var(--navy);
+            padding: 10px 40px 10px 16px;
+            border-radius: 8px;
+            font-size: var(--font-body);
+            font-weight: 600;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%231B365D' viewBox='0 0 16 16'%3E%3Cpath d='M8 12L2 6h12l-6 6z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            min-width: 160px;
+        }
+
+        .control-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.1);
+        }
+
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-label {
+            font-size: var(--font-body-sm);
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .toggle-label.active {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            background: var(--light-steel);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: var(--navy);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(22px);
+        }
+
+        /* Main Content */
+        .main {
+            padding: 32px 48px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Summary Section */
+        .summary-section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: var(--font-h2);
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: var(--font-body);
+        }
+
+        /* Summary Cards Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .summary-grid { grid-template-columns: 1fr; }
+            .header, .controls-bar, .main { padding-left: 20px; padding-right: 20px; }
+        }
+
+        .summary-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--light-steel);
+            border-left: 4px solid var(--navy);
+            box-shadow: 0 2px 8px rgba(27, 54, 93, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(27, 54, 93, 0.12);
+        }
+
+        .summary-card.positive { border-left-color: var(--positive); }
+        .summary-card.negative { border-left-color: var(--negative); }
+        .summary-card.neutral { border-left-color: var(--neutral); }
+
+        .summary-card-header {
+            font-size: var(--font-label);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .summary-card-value {
+            font-size: var(--font-value-lg);
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .summary-card-comparisons {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .summary-comparison {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--font-caption);
+            padding: 6px 10px;
+            background: var(--light-bg);
+            border-radius: 6px;
+        }
+
+        .summary-comparison-label {
+            color: var(--text-muted);
+        }
+
+        .summary-comparison-value {
+            font-weight: 600;
+        }
+
+        .summary-comparison-value.up { color: var(--positive); }
+        .summary-comparison-value.down { color: var(--negative); }
+        .summary-comparison-value.neutral { color: var(--neutral); }
+
+        /* KPI Section */
+        .kpi-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--light-steel);
+            margin-bottom: 32px;
+            box-shadow: 0 2px 12px rgba(27, 54, 93, 0.06);
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--light-steel);
+        }
+
+        .kpi-title {
+            font-size: var(--font-h3);
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .kpi-legend {
+            display: flex;
+            gap: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: var(--font-caption);
+            color: var(--text-muted);
+        }
+
+        .legend-line {
+            width: 24px;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        .legend-line.y2026 { background: var(--year-2026); }
+        .legend-line.y2025 { background: var(--year-2025); }
+        .legend-line.y2024 { background: var(--year-2024); }
+
+        /* KPI Content Layout */
+        .kpi-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 1100px) {
+            .kpi-content { grid-template-columns: 1fr; }
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: var(--light-bg);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 320px;
+        }
+
+        /* Monthly Table */
+        .monthly-table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 10px;
+            border: 1px solid var(--light-steel);
+        }
+
+        .monthly-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--font-body-sm);
+        }
+
+        .monthly-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .monthly-table th {
+            background: var(--navy);
+            color: white;
+            padding: 12px 10px;
+            text-align: center;
+            font-size: var(--font-label);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .monthly-table th:first-child {
+            text-align: left;
+            padding-left: 14px;
+        }
+
+        .monthly-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--light-steel);
+            vertical-align: middle;
+        }
+
+        .monthly-table td:first-child {
+            text-align: left;
+            padding-left: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            background: rgba(248, 250, 252, 0.8);
+        }
+
+        .monthly-table tbody tr:hover td {
+            background: rgba(143, 175, 212, 0.1);
+        }
+
+        .monthly-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .monthly-table .value-2026 {
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .monthly-table .value-2025,
+        .monthly-table .value-2024 {
+            color: var(--text-muted);
+        }
+
+        .variance-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: var(--font-micro);
+            font-weight: 600;
+            min-width: 54px;
+        }
+
+        .variance-badge.up {
+            background: rgba(46, 125, 90, 0.12);
+            color: var(--positive);
+        }
+
+        .variance-badge.down {
+            background: rgba(196, 49, 75, 0.12);
+            color: var(--negative);
+        }
+
+        .variance-badge.neutral {
+            background: rgba(184, 134, 11, 0.1);
+            color: var(--neutral);
+        }
+
+        .cell-na {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Chart Tooltip */
+        .chart-tooltip {
+            position: fixed;
+            background: var(--navy);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: var(--font-body-sm);
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            display: none;
+            max-width: 240px;
+        }
+
+        .chart-tooltip.visible { display: block; }
+
+        .tooltip-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .tooltip-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 4px;
+        }
+
+        .tooltip-row:last-child { margin-bottom: 0; }
+        .tooltip-label { opacity: 0.8; }
+        .tooltip-value { font-weight: 600; }
+
+        /* Upload Overlay */
+        .upload-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(27, 54, 93, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .upload-box {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 48px 64px;
+            text-align: center;
+            max-width: 480px;
+        }
+
+        .upload-box h2 {
+            font-size: var(--font-h1);
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .upload-box p {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .dropzone {
+            border: 2px dashed var(--light-steel);
+            border-radius: 12px;
+            padding: 40px 32px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .dropzone:hover {
+            border-color: var(--navy);
+            background: var(--light-bg);
+        }
+
+        .dropzone.dragover {
+            border-color: var(--navy);
+            background: rgba(27, 54, 93, 0.05);
+        }
+
+        .dropzone-text {
+            color: var(--text-muted);
+        }
+
+        .dropzone-text span {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        /* Loading State */
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--light-steel);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-muted);
+            font-size: var(--font-body);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main { animation: fadeIn 0.4s ease-out; }
+
+        .summary-card, .kpi-section {
+            animation: fadeInUp 0.5s ease-out backwards;
+        }
+
+        .summary-grid .summary-card:nth-child(1) { animation-delay: 0.05s; }
+        .summary-grid .summary-card:nth-child(2) { animation-delay: 0.1s; }
+        .summary-grid .summary-card:nth-child(3) { animation-delay: 0.15s; }
+        .summary-grid .summary-card:nth-child(4) { animation-delay: 0.2s; }
+        .summary-grid .summary-card:nth-child(5) { animation-delay: 0.25s; }
+        .summary-grid .summary-card:nth-child(6) { animation-delay: 0.3s; }
+        .summary-grid .summary-card:nth-child(7) { animation-delay: 0.35s; }
+        .summary-grid .summary-card:nth-child(8) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <div class="chart-tooltip" id="chartTooltip"></div>
+
+    <script>
+    (function() {
+        'use strict';
+
+        // ============================================
+        // CONSTANTS & CONFIGURATION
+        // ============================================
+
+        const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const MONTH_KEYS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        // KPI Configuration - defines how each KPI should be displayed
+        const KPI_CONFIG = {
+            'Total Sales': {
+                name: 'Total Sales',
+                format: 'currency',
+                isMemberBased: false,
+                isPercentage: false
+            },
+            'Sales Penetration': {
+                name: 'Sales Penetration',
+                format: 'percent',
+                isMemberBased: false,
+                isPercentage: true
+            },
+            'Transacting Members': {
+                name: 'Transacting Members',
+                format: 'number',
+                isMemberBased: false,
+                isPercentage: false
+            },
+            'New Members': {
+                name: 'New Members',
+                format: 'number',
+                isMemberBased: true,
+                isPercentage: false
+            },
+            'Returning Members': {
+                name: 'Returning Members',
+                format: 'number',
+                isMemberBased: true,
+                isPercentage: false
+            },
+            'Redeeming Members': {
+                name: 'Redeeming Members',
+                format: 'number',
+                isMemberBased: true,
+                isPercentage: false
+            },
+            'Cross Brand Plus': {
+                name: 'Cross Brand Plus',
+                format: 'number',
+                isMemberBased: true,
+                isPercentage: false
+            },
+            'New Brand Adopters': {
+                name: 'New Brand Adopters',
+                format: 'number',
+                isMemberBased: true,
+                isPercentage: false
+            }
+        };
+
+        // Preferred display order for KPIs
+        const KPI_ORDER = [
+            'Total Sales',
+            'Sales Penetration',
+            'Transacting Members',
+            'New Members',
+            'Returning Members',
+            'Redeeming Members',
+            'Cross Brand Plus',
+            'New Brand Adopters'
+        ];
+
+        // Market display order
+        const MARKET_ORDER = ['ALL', 'All', 'All Markets', 'KSA', 'Saudi Arabia', 'UAE', 'United Arab Emirates'];
+
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+
+        let state = {
+            rawData: null,
+            processedData: null,
+            markets: [],
+            kpis: [],
+            selectedMarket: null,
+            showPercentView: false,
+            dataLoaded: false,
+            loading: true
+        };
+
+        // ============================================
+        // DATA PARSING & PROCESSING
+        // ============================================
+
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            if (lines.length < 2) {
+                throw new Error('CSV file is empty or has no data rows');
+            }
+
+            const headers = lines[0].split(',').map(h => h.trim());
+            const data = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i];
+                if (!line.trim()) continue;
+
+                const values = parseCSVLine(line);
+                if (values.length < headers.length) continue;
+
+                const row = {};
+                headers.forEach((header, idx) => {
+                    const val = values[idx] ? values[idx].trim() : '';
+                    row[header] = val;
+                });
+
+                // Only include rows with valid Market, Year, and KPI
+                if (row.Market && row.Year && row.KPI) {
+                    data.push(row);
+                }
+            }
+
+            return data;
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current);
+            return result;
+        }
+
+        function processData(rawData) {
+            // Structure: { market: { kpi: { year: { month: value } } } }
+            const processed = {};
+            const marketsSet = new Set();
+            const kpisSet = new Set();
+
+            rawData.forEach(row => {
+                const market = row.Market;
+                const year = row.Year;
+                const kpi = row.KPI;
+
+                marketsSet.add(market);
+                kpisSet.add(kpi);
+
+                if (!processed[market]) {
+                    processed[market] = {};
+                }
+                if (!processed[market][kpi]) {
+                    processed[market][kpi] = {};
+                }
+                if (!processed[market][kpi][year]) {
+                    processed[market][kpi][year] = {};
+                }
+
+                // Parse monthly values
+                MONTH_KEYS.forEach(month => {
+                    const val = row[month];
+                    if (val !== undefined && val !== null && val !== '') {
+                        const numVal = parseFloat(val);
+                        if (!isNaN(numVal)) {
+                            processed[market][kpi][year][month] = numVal;
+                        }
+                    }
+                });
+            });
+
+            // Sort markets
+            const markets = Array.from(marketsSet).sort((a, b) => {
+                const aIdx = MARKET_ORDER.indexOf(a);
+                const bIdx = MARKET_ORDER.indexOf(b);
+                if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+                if (aIdx !== -1) return -1;
+                if (bIdx !== -1) return 1;
+                return a.localeCompare(b);
+            });
+
+            // Sort KPIs by preferred order
+            const kpis = Array.from(kpisSet).sort((a, b) => {
+                const aIdx = KPI_ORDER.indexOf(a);
+                const bIdx = KPI_ORDER.indexOf(b);
+                if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx;
+                if (aIdx !== -1) return -1;
+                if (bIdx !== -1) return 1;
+                return a.localeCompare(b);
+            });
+
+            return { processed, markets, kpis };
+        }
+
+        // ============================================
+        // VALUE RETRIEVAL & CALCULATIONS
+        // ============================================
+
+        function getValue(market, kpi, year, month) {
+            try {
+                const val = state.processedData[market]?.[kpi]?.[year]?.[month];
+                return (val !== undefined && val !== null && !isNaN(val)) ? val : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function getTransactingMembers(market, year, month) {
+            return getValue(market, 'Transacting Members', year, month);
+        }
+
+        function getDisplayValue(market, kpi, year, month) {
+            const config = KPI_CONFIG[kpi];
+            const rawValue = getValue(market, kpi, year, month);
+
+            if (rawValue === null) return null;
+
+            // If showing % view for member-based KPIs
+            if (state.showPercentView && config && config.isMemberBased) {
+                const transacting = getTransactingMembers(market, year, month);
+                if (transacting && transacting > 0) {
+                    return (rawValue / transacting); // Return as decimal (will be formatted as %)
+                }
+                return null;
+            }
+
+            return rawValue;
+        }
+
+        function getFullYearValue(market, kpi, year) {
+            return getDisplayValue(market, kpi, year, 'Dec');
+        }
+
+        function calculateVariance(currentVal, compareVal, isPercentageKPI) {
+            if (currentVal === null || compareVal === null) return null;
+
+            if (isPercentageKPI) {
+                // For percentage KPIs: return percentage point difference
+                return (currentVal - compareVal) * 100;
+            } else {
+                // For other KPIs: return percentage change
+                if (compareVal === 0) return null;
+                return ((currentVal / compareVal) - 1) * 100;
+            }
+        }
+
+        function isPercentageComparison(kpi) {
+            const config = KPI_CONFIG[kpi];
+            if (!config) return false;
+
+            // If showing % view for member-based KPIs, comparisons should be PP
+            if (state.showPercentView && config.isMemberBased) {
+                return true;
+            }
+
+            // Native percentage KPIs (like Sales Penetration)
+            return config.isPercentage;
+        }
+
+        // ============================================
+        // FORMATTING FUNCTIONS
+        // ============================================
+
+        function formatValue(value, kpi) {
+            if (value === null || value === undefined || isNaN(value)) return '—';
+
+            const config = KPI_CONFIG[kpi];
+
+            // If showing % view for member-based KPIs
+            if (state.showPercentView && config && config.isMemberBased) {
+                return (value * 100).toFixed(1) + '%';
+            }
+
+            if (!config) {
+                return formatNumber(value);
+            }
+
+            switch (config.format) {
+                case 'currency':
+                    return formatCurrency(value);
+                case 'percent':
+                    return (value * 100).toFixed(1) + '%';
+                case 'number':
+                    return formatNumber(value);
+                default:
+                    return value.toLocaleString();
+            }
+        }
+
+        function formatCurrency(value) {
+            if (value >= 1e9) return '$' + (value / 1e9).toFixed(2) + 'B';
+            if (value >= 1e6) return '$' + (value / 1e6).toFixed(1) + 'M';
+            if (value >= 1e3) return '$' + (value / 1e3).toFixed(0) + 'K';
+            return '$' + value.toFixed(0);
+        }
+
+        function formatNumber(value) {
+            if (value >= 1e6) return (value / 1e6).toFixed(2) + 'M';
+            if (value >= 1e3) return (value / 1e3).toFixed(1) + 'K';
+            return value.toLocaleString(undefined, { maximumFractionDigits: 0 });
+        }
+
+        function formatVariance(variance, isPercentageKPI) {
+            if (variance === null || isNaN(variance)) return '—';
+
+            const sign = variance >= 0 ? '+' : '';
+            if (isPercentageKPI) {
+                return sign + variance.toFixed(1) + ' PP';
+            }
+            return sign + variance.toFixed(1) + '%';
+        }
+
+        function getVarianceClass(variance) {
+            if (variance === null || isNaN(variance)) return 'neutral';
+            const threshold = 0.5;
+            if (Math.abs(variance) < threshold) return 'neutral';
+            return variance >= 0 ? 'up' : 'down';
+        }
+
+        // ============================================
+        // RENDERING FUNCTIONS
+        // ============================================
+
+        function render() {
+            const app = document.getElementById('app');
+
+            if (state.loading) {
+                app.innerHTML = renderLoading();
+            } else if (!state.dataLoaded) {
+                app.innerHTML = renderUpload();
+            } else {
+                app.innerHTML = renderDashboard();
+            }
+
+            attachEvents();
+        }
+
+        function renderLoading() {
+            return `
+                <div class="upload-overlay">
+                    <div class="upload-box">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">Loading dashboard...</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderUpload() {
+            return `
+                <div class="upload-overlay">
+                    <div class="upload-box">
+                        <h2>2026 KPI Targets</h2>
+                        <p>Upload your MUSE 2026 KPI CSV file to view the forecast dashboard</p>
+                        <div class="dropzone" id="dropzone">
+                            <input type="file" id="fileInput" accept=".csv" style="display:none">
+                            <p class="dropzone-text"><span>Click to browse</span> or drag and drop</p>
+                            <p class="dropzone-text" style="font-size: 12px; margin-top: 8px;">Supports .csv files</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDashboard() {
+            const market = state.selectedMarket;
+
+            return `
+                <header class="header">
+                    <div class="header-left">
+                        <div class="header-text">
+                            <h1>MUSE 2026 KPI Targets</h1>
+                            <p>Forecast vs Historical Performance | ${market}</p>
+                        </div>
+                    </div>
+                    <span class="header-badge">2026 TARGETS</span>
+                </header>
+
+                <div class="controls-bar">
+                    <div class="control-group">
+                        <label>Market</label>
+                        <select class="control-select" id="marketSelect">
+                            ${state.markets.map(m =>
+                                `<option value="${m}" ${m === market ? 'selected' : ''}>${m}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+
+                    <div class="toggle-container" id="percentToggle">
+                        <span class="toggle-label ${!state.showPercentView ? 'active' : ''}">Absolute</span>
+                        <div class="toggle-switch ${state.showPercentView ? 'active' : ''}" id="toggleSwitch"></div>
+                        <span class="toggle-label ${state.showPercentView ? 'active' : ''}">% of Transacting</span>
+                    </div>
+                </div>
+
+                <main class="main">
+                    ${renderSummarySection(market)}
+                    ${renderKPISections(market)}
+                </main>
+            `;
+        }
+
+        function renderSummarySection(market) {
+            const kpis = state.kpis;
+
+            return `
+                <div class="summary-section">
+                    <div class="section-header">
+                        <div class="section-title">Full Year Summary (December YTD)</div>
+                        <div class="section-subtitle">2026 Targets vs 2025 & 2024 Actuals</div>
+                    </div>
+                    <div class="summary-grid">
+                        ${kpis.map(kpi => renderSummaryCard(market, kpi)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSummaryCard(market, kpi) {
+            const config = KPI_CONFIG[kpi] || { name: kpi };
+
+            const val2026 = getFullYearValue(market, kpi, '2026');
+            const val2025 = getFullYearValue(market, kpi, '2025');
+            const val2024 = getFullYearValue(market, kpi, '2024');
+
+            const isPctComparison = isPercentageComparison(kpi);
+            const var2025 = calculateVariance(val2026, val2025, isPctComparison);
+            const var2024 = calculateVariance(val2026, val2024, isPctComparison);
+
+            // Determine card status based on vs 2025
+            let statusClass = '';
+            if (var2025 !== null) {
+                statusClass = var2025 >= 0 ? 'positive' : 'negative';
+            }
+
+            const displayName = state.showPercentView && config.isMemberBased
+                ? kpi + ' %'
+                : config.name || kpi;
+
+            return `
+                <div class="summary-card ${statusClass}">
+                    <div class="summary-card-header">${displayName}</div>
+                    <div class="summary-card-value">${formatValue(val2026, kpi)}</div>
+                    <div class="summary-card-comparisons">
+                        <div class="summary-comparison">
+                            <span class="summary-comparison-label">vs 2025</span>
+                            <span class="summary-comparison-value ${getVarianceClass(var2025)}">
+                                ${formatVariance(var2025, isPctComparison)}
+                            </span>
+                        </div>
+                        <div class="summary-comparison">
+                            <span class="summary-comparison-label">vs 2024</span>
+                            <span class="summary-comparison-value ${getVarianceClass(var2024)}">
+                                ${formatVariance(var2024, isPctComparison)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderKPISections(market) {
+            return state.kpis.map(kpi => renderKPISection(market, kpi)).join('');
+        }
+
+        function renderKPISection(market, kpi) {
+            const config = KPI_CONFIG[kpi] || { name: kpi };
+            const displayName = state.showPercentView && config.isMemberBased
+                ? kpi + ' (% of Transacting Members)'
+                : config.name || kpi;
+
+            return `
+                <div class="kpi-section">
+                    <div class="kpi-header">
+                        <div class="kpi-title">${displayName}</div>
+                        <div class="kpi-legend">
+                            <div class="legend-item">
+                                <div class="legend-line y2026"></div>
+                                <span>2026 Target</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-line y2025"></div>
+                                <span>2025 Actual</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-line y2024"></div>
+                                <span>2024 Actual</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="chart-container">
+                            ${renderChart(market, kpi)}
+                        </div>
+                        <div class="monthly-table-container">
+                            ${renderMonthlyTable(market, kpi)}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderChart(market, kpi) {
+            const width = 700;
+            const height = 320;
+            const marginLeft = 70;
+            const marginRight = 30;
+            const marginTop = 20;
+            const marginBottom = 40;
+            const chartWidth = width - marginLeft - marginRight;
+            const chartHeight = height - marginTop - marginBottom;
+
+            // Gather all values for scale calculation
+            const allValues = [];
+            MONTH_KEYS.forEach(month => {
+                ['2024', '2025', '2026'].forEach(year => {
+                    const val = getDisplayValue(market, kpi, year, month);
+                    if (val !== null) allValues.push(val);
+                });
+            });
+
+            if (allValues.length === 0) {
+                return `
+                    <svg class="chart-svg" viewBox="0 0 ${width} ${height}">
+                        <text x="${width/2}" y="${height/2}" text-anchor="middle" fill="var(--text-muted)" font-size="14">
+                            No data available
+                        </text>
+                    </svg>
+                `;
+            }
+
+            const minVal = Math.min(...allValues) * 0.95;
+            const maxVal = Math.max(...allValues) * 1.05;
+            const valueRange = maxVal - minVal || 1;
+
+            const xScale = i => marginLeft + (i * chartWidth / 11);
+            const yScale = v => marginTop + chartHeight - ((v - minVal) / valueRange) * chartHeight;
+
+            // Build paths for each year
+            let path2026 = '';
+            let path2025 = '';
+            let path2024 = '';
+            let dots2026 = '';
+            let dots2025 = '';
+            let dots2024 = '';
+
+            MONTH_KEYS.forEach((month, i) => {
+                const x = xScale(i);
+
+                const val2026 = getDisplayValue(market, kpi, '2026', month);
+                const val2025 = getDisplayValue(market, kpi, '2025', month);
+                const val2024 = getDisplayValue(market, kpi, '2024', month);
+
+                if (val2026 !== null) {
+                    const y = yScale(val2026);
+                    path2026 += (path2026 ? ' L' : 'M') + `${x},${y}`;
+                    const tooltipData = encodeTooltipData(month, kpi, val2026, val2025, val2024);
+                    dots2026 += `<circle cx="${x}" cy="${y}" r="5" fill="var(--year-2026)" class="chart-dot" data-tooltip="${tooltipData}" style="cursor:pointer"/>`;
+                }
+
+                if (val2025 !== null) {
+                    const y = yScale(val2025);
+                    path2025 += (path2025 ? ' L' : 'M') + `${x},${y}`;
+                    dots2025 += `<circle cx="${x}" cy="${y}" r="4" fill="var(--year-2025)" class="chart-dot" data-tooltip="${encodeTooltipData(month, kpi, val2026, val2025, val2024)}" style="cursor:pointer"/>`;
+                }
+
+                if (val2024 !== null) {
+                    const y = yScale(val2024);
+                    path2024 += (path2024 ? ' L' : 'M') + `${x},${y}`;
+                    dots2024 += `<circle cx="${x}" cy="${y}" r="3" fill="var(--year-2024)" class="chart-dot" data-tooltip="${encodeTooltipData(month, kpi, val2026, val2025, val2024)}" style="cursor:pointer"/>`;
+                }
+            });
+
+            // Y-axis labels and grid
+            let yAxisHTML = '';
+            const numTicks = 5;
+            for (let i = 0; i <= numTicks; i++) {
+                const v = minVal + (valueRange * i / numTicks);
+                const y = yScale(v);
+                yAxisHTML += `
+                    <line x1="${marginLeft}" y1="${y}" x2="${width - marginRight}" y2="${y}" stroke="var(--light-steel)" stroke-dasharray="3,3"/>
+                    <text x="${marginLeft - 10}" y="${y + 4}" text-anchor="end" fill="var(--text-muted)" font-size="11">${formatValue(v, kpi)}</text>
+                `;
+            }
+
+            // X-axis labels
+            const xAxisHTML = MONTH_KEYS.map((m, i) =>
+                `<text x="${xScale(i)}" y="${height - 12}" text-anchor="middle" fill="var(--text-muted)" font-size="11">${m}</text>`
+            ).join('');
+
+            return `
+                <svg class="chart-svg" viewBox="0 0 ${width} ${height}">
+                    <!-- Grid and axes -->
+                    ${yAxisHTML}
+                    ${xAxisHTML}
+
+                    <!-- Lines -->
+                    ${path2024 ? `<path d="${path2024}" fill="none" stroke="var(--year-2024)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
+                    ${path2025 ? `<path d="${path2025}" fill="none" stroke="var(--year-2025)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
+                    ${path2026 ? `<path d="${path2026}" fill="none" stroke="var(--year-2026)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
+
+                    <!-- Dots -->
+                    ${dots2024}
+                    ${dots2025}
+                    ${dots2026}
+                </svg>
+            `;
+        }
+
+        function encodeTooltipData(month, kpi, val2026, val2025, val2024) {
+            const data = { month, kpi, val2026, val2025, val2024 };
+            return encodeURIComponent(JSON.stringify(data));
+        }
+
+        function renderMonthlyTable(market, kpi) {
+            const isPctComparison = isPercentageComparison(kpi);
+
+            const rows = MONTH_KEYS.map(month => {
+                const val2026 = getDisplayValue(market, kpi, '2026', month);
+                const val2025 = getDisplayValue(market, kpi, '2025', month);
+                const val2024 = getDisplayValue(market, kpi, '2024', month);
+
+                const var2025 = calculateVariance(val2026, val2025, isPctComparison);
+                const var2024 = calculateVariance(val2026, val2024, isPctComparison);
+
+                return `
+                    <tr>
+                        <td>${month}</td>
+                        <td class="value-2026">${formatValue(val2026, kpi)}</td>
+                        <td>
+                            ${var2025 !== null
+                                ? `<span class="variance-badge ${getVarianceClass(var2025)}">${formatVariance(var2025, isPctComparison)}</span>`
+                                : '<span class="cell-na">—</span>'
+                            }
+                        </td>
+                        <td>
+                            ${var2024 !== null
+                                ? `<span class="variance-badge ${getVarianceClass(var2024)}">${formatVariance(var2024, isPctComparison)}</span>`
+                                : '<span class="cell-na">—</span>'
+                            }
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            return `
+                <table class="monthly-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>2026</th>
+                            <th>vs 2025</th>
+                            <th>vs 2024</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // ============================================
+        // EVENT HANDLING
+        // ============================================
+
+        function attachEvents() {
+            // File upload
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('fileInput');
+
+            if (dropzone && fileInput) {
+                dropzone.addEventListener('click', () => fileInput.click());
+
+                dropzone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.add('dragover');
+                });
+
+                dropzone.addEventListener('dragleave', () => {
+                    dropzone.classList.remove('dragover');
+                });
+
+                dropzone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.remove('dragover');
+                    const file = e.dataTransfer.files[0];
+                    if (file && file.name.endsWith('.csv')) {
+                        loadFile(file);
+                    }
+                });
+
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        loadFile(file);
+                    }
+                });
+            }
+
+            // Market selector
+            const marketSelect = document.getElementById('marketSelect');
+            if (marketSelect) {
+                marketSelect.addEventListener('change', (e) => {
+                    state.selectedMarket = e.target.value;
+                    render();
+                });
+            }
+
+            // Percent toggle
+            const toggleSwitch = document.getElementById('toggleSwitch');
+            if (toggleSwitch) {
+                toggleSwitch.addEventListener('click', () => {
+                    state.showPercentView = !state.showPercentView;
+                    render();
+                });
+            }
+
+            // Chart tooltips
+            const chartDots = document.querySelectorAll('.chart-dot');
+            const tooltip = document.getElementById('chartTooltip');
+
+            chartDots.forEach(dot => {
+                dot.addEventListener('mouseenter', (e) => {
+                    const data = JSON.parse(decodeURIComponent(dot.getAttribute('data-tooltip')));
+                    showTooltip(e, data);
+                });
+
+                dot.addEventListener('mouseleave', () => {
+                    hideTooltip();
+                });
+
+                dot.addEventListener('mousemove', (e) => {
+                    positionTooltip(e);
+                });
+            });
+        }
+
+        function showTooltip(e, data) {
+            const tooltip = document.getElementById('chartTooltip');
+            const isPct = isPercentageComparison(data.kpi);
+
+            const var2025 = calculateVariance(data.val2026, data.val2025, isPct);
+            const var2024 = calculateVariance(data.val2026, data.val2024, isPct);
+
+            tooltip.innerHTML = `
+                <div class="tooltip-title">${data.month}</div>
+                <div class="tooltip-row">
+                    <span class="tooltip-label">2026 Target:</span>
+                    <span class="tooltip-value">${formatValue(data.val2026, data.kpi)}</span>
+                </div>
+                <div class="tooltip-row">
+                    <span class="tooltip-label">2025 Actual:</span>
+                    <span class="tooltip-value">${formatValue(data.val2025, data.kpi)}</span>
+                </div>
+                <div class="tooltip-row">
+                    <span class="tooltip-label">2024 Actual:</span>
+                    <span class="tooltip-value">${formatValue(data.val2024, data.kpi)}</span>
+                </div>
+                <div class="tooltip-row" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.2);">
+                    <span class="tooltip-label">vs 2025:</span>
+                    <span class="tooltip-value">${formatVariance(var2025, isPct)}</span>
+                </div>
+                <div class="tooltip-row">
+                    <span class="tooltip-label">vs 2024:</span>
+                    <span class="tooltip-value">${formatVariance(var2024, isPct)}</span>
+                </div>
+            `;
+
+            tooltip.classList.add('visible');
+            positionTooltip(e);
+        }
+
+        function positionTooltip(e) {
+            const tooltip = document.getElementById('chartTooltip');
+            const offset = 15;
+            let x = e.clientX + offset;
+            let y = e.clientY + offset;
+
+            // Keep tooltip in viewport
+            const rect = tooltip.getBoundingClientRect();
+            if (x + rect.width > window.innerWidth) {
+                x = e.clientX - rect.width - offset;
+            }
+            if (y + rect.height > window.innerHeight) {
+                y = e.clientY - rect.height - offset;
+            }
+
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+        }
+
+        function hideTooltip() {
+            const tooltip = document.getElementById('chartTooltip');
+            tooltip.classList.remove('visible');
+        }
+
+        // ============================================
+        // FILE LOADING
+        // ============================================
+
+        function loadFile(file) {
+            state.loading = true;
+            render();
+
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                try {
+                    const csvText = e.target.result;
+                    const rawData = parseCSV(csvText);
+                    const { processed, markets, kpis } = processData(rawData);
+
+                    state.rawData = rawData;
+                    state.processedData = processed;
+                    state.markets = markets;
+                    state.kpis = kpis;
+                    state.selectedMarket = markets[0] || 'ALL';
+                    state.dataLoaded = true;
+                    state.loading = false;
+
+                    render();
+                } catch (error) {
+                    console.error('Error parsing CSV:', error);
+                    alert('Error parsing CSV file: ' + error.message);
+                    state.loading = false;
+                    render();
+                }
+            };
+
+            reader.onerror = () => {
+                console.error('Error reading file');
+                alert('Error reading file');
+                state.loading = false;
+                render();
+            };
+
+            reader.readAsText(file);
+        }
+
+        // ============================================
+        // AUTO-LOAD CSV
+        // ============================================
+
+        async function tryAutoLoadCSV() {
+            const csvFiles = [
+                'MUSE 2026 MVP KPIs.csv',
+                'muse_2026_kpis.csv',
+                'data.csv'
+            ];
+
+            for (const filename of csvFiles) {
+                try {
+                    const response = await fetch(filename);
+                    if (response.ok) {
+                        const csvText = await response.text();
+                        const rawData = parseCSV(csvText);
+                        const { processed, markets, kpis } = processData(rawData);
+
+                        state.rawData = rawData;
+                        state.processedData = processed;
+                        state.markets = markets;
+                        state.kpis = kpis;
+                        state.selectedMarket = markets[0] || 'ALL';
+                        state.dataLoaded = true;
+                        state.loading = false;
+
+                        render();
+                        return;
+                    }
+                } catch (e) {
+                    // Continue to next file
+                }
+            }
+
+            // No file found, show upload
+            state.loading = false;
+            render();
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+
+        function init() {
+            render();
+            tryAutoLoadCSV();
+        }
+
+        // Start the app
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+    })();
+    </script>
+</body>
+</html>
